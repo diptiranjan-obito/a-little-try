@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2a1c16">
+<title>For The Days That Hurt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#2a1c16;--mid:#3a2820;--cream:#f6ead7;--lav:#d9a58b;--pink:#e2b09a;--gold:#f3c985}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--navy);color:var(--cream);font-family:Nunito,system-ui,sans-serif;overflow-x:hidden;scroll-behavior:smooth}
+h1,h2,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--cream);animation:tw var(--d) ease-in-out infinite var(--l)}
+@keyframes tw{0%,100%{opacity:.08}50%{opacity:.9}}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fi{to{opacity:1}}
+.scr{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:18px;transition:opacity 1.2s;opacity:0;pointer-events:none;overflow:hidden}
+.scr.on{opacity:1;pointer-events:auto}
+#intro{opacity:1;pointer-events:auto;background:radial-gradient(#4a3126,#1e130e);z-index:50}
+#intro.hide{opacity:0;pointer-events:none}
+#intro .stars{opacity:0;animation:fi 6s 1s forwards}
+.ln{opacity:0;animation:up 2.5s ease forwards;animation-delay:var(--a);max-width:320px;line-height:1.6;position:relative}
+#intro h1{font-size:3rem;color:var(--gold)}
+#intro p{font-size:1.1rem;color:#eadbc6}
+.btn{position:relative;min-height:54px;padding:14px 26px;border-radius:30px;border:1px solid rgba(243,201,133,.5);color:var(--gold);letter-spacing:.14em;font-size:.82rem;background:rgba(243,201,133,.06);transition:.3s}
+.btn:active{transform:scale(.97);background:rgba(243,201,133,.18)}
+.lnk{padding:14px;color:#c7b2a0;font-size:.9rem}
+#room{display:none;padding-bottom:110px}
+#room.on{display:block;animation:up 2s ease}
+.scene{position:relative;max-width:430px;margin:0 auto;aspect-ratio:360/440;background:linear-gradient(#3a2620,#7a4a3c 60%,#d49a72);overflow:hidden}
+.scene svg,.scene canvas,.shade{position:absolute;inset:0;width:100%;height:100%}
+.scene canvas,#glow,.shade{pointer-events:none}
+.shade{background:#1e130e;transition:opacity 1s}
+svg g[id],svg #win{cursor:pointer}
+svg g[id]:active{opacity:.75}
+#plant{transform-box:fill-box;transform-origin:50% 100%;transition:transform 2s}
+.hint{text-align:center;font-size:.8rem;color:#b09a88;padding:10px}
+.pn{max-width:430px;margin:0 auto;padding:12px 18px}
+.pn h2{font-size:2rem;text-align:center;margin:22px 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{min-height:96px;padding:12px;border-radius:18px;background:rgba(244,234,216,.06);border:1px solid rgba(244,234,216,.12);font-size:.82rem;letter-spacing:.08em;line-height:1.5;transition:.3s}
+.opt:active{transform:scale(.97);background:rgba(217,165,139,.18)}
+.glass,.card{background:rgba(244,234,216,.07);border:1px solid rgba(244,234,216,.12);border-radius:18px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.card{padding:30px 22px;max-width:340px;width:100%}
+.big{font-size:1.7rem;line-height:1.35;transition:opacity .6s;max-width:330px}
+.fade{animation:up 2s ease}
+.small{font-size:.85rem;color:#c7b2a0}
+#ci{padding:22px 18px;min-height:150px;text-align:center}
+#ci .q{font-size:1.5rem;margin-bottom:14px}
+#ci .row{display:flex;gap:10px;justify-content:center}
+#ci .row .btn{padding:12px 24px;letter-spacing:.05em;font-size:.95rem}
+.env{position:relative;display:block;width:100%;text-align:left;margin-bottom:12px;padding:18px;border-radius:12px;background:#e8dcc6;color:#3a2820;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.env .fl{position:absolute;left:0;right:0;top:0;height:34px;background:#d9ccb2;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .6s;opacity:.7}
+.env.open .fl{transform:rotateX(180deg);opacity:.3}
+.env .t{position:relative;display:block;font-size:.75rem;letter-spacing:.14em;font-weight:600;padding-top:14px}
+.env .m{display:block;max-height:0;overflow:hidden;transition:max-height .8s ease,margin .5s;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.25rem;line-height:1.45}
+.env.open .m{max-height:320px;margin-top:12px}
+#ov{z-index:30;background:radial-gradient(#4a3126,#24170f)}
+#ov.dark{background:#1a100b}
+#ar{position:relative;width:100%;max-width:400px;height:58vh;overflow:hidden;border-radius:18px}
+.fs{position:absolute;top:-50px;font-size:2.2rem;color:var(--gold);width:56px;height:56px;animation:fall linear forwards;text-shadow:0 0 8px rgba(243,201,133,.5)}
+@keyframes fall{to{top:105%}}
+#mg{display:grid;grid-template-columns:repeat(4,70px);gap:10px}
+.mc{height:84px;border-radius:12px;background:#5a3d30;font-size:1.8rem;color:var(--gold);transition:.3s}
+.mc span{opacity:0;transition:.3s}.mc.f span,.mc.m span{opacity:1}.mc.m{background:#8a5a45}
+#br{width:120px;height:120px;border-radius:50%;margin:30px;display:flex;align-items:center;justify-content:center;background:radial-gradient(rgba(217,165,139,.4),rgba(217,165,139,.08));box-shadow:0 0 40px rgba(217,165,139,.2);transition:transform 4s ease-in-out}
+#bl{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase}
+#toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);width:min(340px,88vw);padding:16px 20px;text-align:center;opacity:0;pointer-events:none;transition:.5s;z-index:60;background:rgba(58,40,32,.92);border:1px solid rgba(243,201,133,.3);border-radius:16px;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.2rem;line-height:1.4}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+#ab{position:fixed;right:16px;bottom:16px;width:52px;height:52px;border-radius:50%;z-index:20;background:rgba(58,40,32,.85);border:1px solid rgba(244,234,216,.2);font-size:1.3rem}
+#ap{position:fixed;right:16px;bottom:78px;z-index:20;padding:10px;display:none;flex-direction:column;gap:4px;background:rgba(58,40,32,.95)}
+#ap.on{display:flex}
+#ap button{padding:12px 16px;text-align:left;border-radius:10px;font-size:.95rem}
+#ap .sel{background:rgba(217,165,139,.2)}
+#fin{z-index:40;background:radial-gradient(#4a3126,#1a100b)}
+#blk{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 5s;z-index:70;display:flex;align-items:flex-end;justify-content:center;padding:30px}
+#blk.on{opacity:1;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important;scroll-behavior:auto}.stars i{animation:none!important;opacity:.6}}
+</style>
+</head>
+<body>
+
+<section id="intro" class="scr">
+  <div class="stars" id="s1"></div>
+  <h1 class="serif ln" style="--a:5s" id="hey">hey, you.</h1>
+  <p class="ln" style="--a:8s">today doesn't have to be productive.<br>today doesn't have to be pretty.<br>today just has to be gentle.</p>
+  <p class="ln" style="--a:12s">so I made you a little place to rest.</p>
+  <button class="btn ln" style="--a:15s" id="enter">ENTER YOUR LITTLE ROOM ✦</button>
+</section>
+
+<main id="room">
+  <div class="scene">
+    <svg viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="gg"><stop offset="0" stop-color="#f3c985" stop-opacity=".75"/><stop offset="1" stop-color="#f3c985" stop-opacity="0"/></radialGradient></defs>
+      <path d="M0 0H360V440H0Z M70 30H290V200H70Z" fill="#4a3329" fill-rule="evenodd"/>
+      <rect y="330" width="360" height="110" fill="#33231b"/>
+      <rect x="70" y="30" width="220" height="170" fill="none" stroke="#6b4a38" stroke-width="6"/>
+      <path d="M180 30V200M70 115H290" stroke="#6b4a38" stroke-width="3"/>
+      <rect id="win" x="70" y="30" width="220" height="170" fill="transparent"/>
+      <g id="moon"><circle cx="235" cy="75" r="26" fill="#f4ead8" opacity=".12"/><circle cx="235" cy="75" r="17" fill="#f4ead8"/></g>
+      <rect x="14" y="244" width="130" height="5" fill="#6b4a38"/>
+      <g id="book"><rect x="20" y="214" width="10" height="30" fill="#cf8f6b"/><rect x="31" y="220" width="9" height="24" fill="#e2b09a"/><rect x="41" y="212" width="11" height="32" fill="#c99a55"/><rect x="54" y="222" width="9" height="22" fill="#8a6a4f"/></g>
+      <g id="plant"><rect x="100" y="232" width="20" height="12" rx="2" fill="#b98b6b"/><path d="M110 232C100 218 98 212 102 206M110 232C112 216 118 212 122 210M110 232C108 220 110 212 110 204" stroke="#7fae8a" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+      <rect x="14" y="268" width="236" height="118" rx="12" fill="#5a3d30"/>
+      <rect x="30" y="262" width="76" height="38" rx="18" fill="#e9dcc9"/>
+      <g id="blanket"><rect x="14" y="296" width="236" height="90" rx="14" fill="#b5704f"/><path d="M14 316H250" stroke="#cf8f6b" stroke-width="3"/></g>
+      <g id="plush"><circle cx="128" cy="274" r="6" fill="#e2b09a"/><circle cx="152" cy="274" r="6" fill="#e2b09a"/><circle cx="140" cy="288" r="16" fill="#e2b09a"/><circle cx="134" cy="287" r="1.7" fill="#2a2a3a"/><circle cx="146" cy="287" r="1.7" fill="#2a2a3a"/></g>
+      <rect x="262" y="300" width="94" height="84" rx="6" fill="#5a3d30"/>
+      <g id="clk"><rect x="278" y="212" width="74" height="26" rx="6" fill="#2a1c16" stroke="#6b4a38"/><text id="ct" x="315" y="229.5" text-anchor="middle" fill="#f3c985" font-size="12" font-family="monospace">21:40</text></g>
+      <g id="mug"><rect x="264" y="276" width="34" height="28" fill="transparent"/><rect x="270" y="284" width="18" height="16" rx="3" fill="#e9dcc9"/><path d="M288 288h4a4 4 0 010 8h-4" stroke="#e9dcc9" fill="none" stroke-width="2"/></g>
+      <g id="lamp"><rect x="282" y="246" width="50" height="60" fill="transparent"/><polygon points="285,252 325,252 318,280 292,280" fill="#f3c985"/><rect x="303" y="280" width="4" height="20" fill="#c99a55"/><ellipse cx="305" cy="300" rx="14" ry="4" fill="#c99a55"/></g>
+      <circle id="glow" cx="305" cy="265" r="95" fill="url(#gg)"/>
+    </svg>
+    <canvas id="cv"></canvas>
+    <div class="shade" id="shade"></div>
+  </div>
+  <p class="hint">tap things in the room ✦</p>
+
+  <div class="pn">
+    <h2>What do you need right now?</h2>
+    <div class="grid">
+      <button class="opt" data-m="comfort">🫂<br>COMFORT</button>
+      <button class="opt" data-m="dist">🌧️<br>DISTRACT ME</button>
+      <button class="opt" data-m="rest">😴<br>HELP ME REST</button>
+      <button class="opt" data-m="comp">💬<br>I JUST WANT SOMEONE HERE</button>
+    </div>
+
+    <h2>just a tiny check-in</h2>
+    <div class="glass" id="ci"></div>
+
+    <h2>open when…</h2>
+    <div id="ow"></div>
+
+    <div style="text-align:center;margin-top:34px">
+      <button class="btn" id="end">WHEN YOU'RE READY ✦</button><br>
+      <button class="lnk" id="dn" style="opacity:.3;font-size:.75rem">· do nothing ·</button>
+    </div>
+  </div>
+</main>
+
+<section id="ov" class="scr"></section>
+<section id="fin" class="scr"><div class="stars" id="s2"></div><div id="fl" style="position:relative;min-height:120px;display:flex;align-items:center;justify-content:center"></div><button class="btn" id="cw" style="display:none">CLOSE THE WORLD FOR A WHILE</button></section>
+<div id="blk"><span class="small" id="bk2" style="opacity:0;transition:opacity 3s">tap to come back</span></div>
+<div id="toast"></div>
+<button id="ab" aria-label="ambience">♪</button>
+<div id="ap" class="glass"></div>
+
+<script>
+const SITE_DATA = {
+  name: "you",
+  comfortMessages: [
+    "You don't have to be cheerful today.",
+    "You're allowed to have a difficult day.",
+    "Be gentle with yourself.",
+    "Rest isn't wasting time.",
+    "Today can be slow.",
+    "Nothing about you needs to be earned right now."
+  ],
+  plushieMessages: [
+    "*soft plushie noises* You're doing fine.",
+    "Plushie says: blanket up, shoulders down.",
+    "This plushie is on duty. You can clock out.",
+    "Squish. That's the whole message.",
+    "Plushie has decided you are excused from everything."
+  ],
+  companyMessages: [
+    "I'm here.",
+    "You don't have to explain why you're having a bad day.",
+    "You're allowed to be quiet.",
+    "Take your time.",
+    "You don't have to reply to this website."
+  ],
+  clockFunny: [
+    "It is currently 'blanket o'clock'.",
+    "Time is fake. Rest is real.",
+    "The clock says: nothing is due."
+  ],
+  moonSecret: "Secret: the moon has seen plenty of rough days. They all passed, quietly. ☾",
+  checkIn: [
+    { q: "Had anything to drink?", a: ["yeah", "not yet"], r: ["Good. That counts.", "That's okay. Maybe a sip when you feel like it."] },
+    { q: "Had something to eat?", a: ["yeah", "not yet"], r: ["Nice. Tiny win.", "That's okay. One tiny thing at a time."] },
+    { q: "Somewhere comfortable?", a: ["yes", "trying"], r: ["Stay there as long as you like.", "Trying is enough. Pillows help."] }
+  ],
+  openWhenMessages: [
+    { title: "OPEN WHEN THE CRAMPS ARE BAD", message: "No need to push through anything today. Go slow, get as cozy as you can, and keep the bar for today really low. If it ever feels like too much, please tell someone you trust or a doctor. You deserve proper help." },
+    { title: "OPEN WHEN EVERYTHING IS ANNOYING", message: "Then everything is annoying. That's allowed. You don't have to be nice about it today. Complain as much as you want." },
+    { title: "OPEN WHEN YOU FEEL LIKE CRYING", message: "You don't need a reason. Let it out if it wants out. Maybe have some water and something soft nearby afterwards." },
+    { title: "OPEN WHEN YOU WANT TO BE LEFT ALONE", message: "Okay. Phone down, door closed. Nobody needs a reply from you. This room will still be here whenever you want it." },
+    { title: "OPEN WHEN YOU JUST WANT SOMEONE AROUND", message: "You don't have to talk or be fun. Send something boring, or nothing at all. Being around is enough." },
+    { title: "OPEN WHEN YOU NEED A DISTRACTION", message: "Try this: find five things in the room you can see. Then open the little book on the shelf. Small, easy things count." }
+  ]
+};
+
+const $ = s => document.querySelector(s), RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const pick = a => a[Math.random() * a.length | 0];
+let T = [];
+const clearT = () => { T.forEach(clearInterval); T = []; };
+let tt; function toast(t) { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => e.classList.remove('on'), 4200); }
+function stars(el, n) { for (let i = 0; i < n; i++) { const s = document.createElement('i'); s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;--d:${3 + Math.random() * 4}s;--l:-${Math.random() * 5}s`; if (Math.random() < .15) s.style.width = s.style.height = '3px'; el.appendChild(s); } }
+stars($('#s1'), 70); stars($('#s2'), 80);
+$('#hey').textContent = 'hey, ' + SITE_DATA.name + '.';
+
+/* intro */
+$('#enter').onclick = () => {
+  $('#intro').classList.add('hide');
+  setTimeout(() => { $('#intro').style.display = 'none'; }, 1400);
+  $('#room').classList.add('on'); scrollTo(0, 0); rs(); mkRain();
+};
+
+/* room canvas */
+const cv = $('#cv'), cx = cv.getContext('2d');
+let W, H, sc, drops = [], rain = 1, lamp = 1;
+const N = [20, 60, 120], dust = [], ST = [];
+for (let i = 0; i < 22; i++) dust.push({ x: Math.random() * 360, y: Math.random() * 440, r: .6 + Math.random(), v: .08 + Math.random() * .12, p: Math.random() * 6 });
+for (let i = 0; i < 20; i++) ST.push({ x: Math.random() * 220, y: 35 + Math.random() * 90, p: Math.random() * 6 });
+function rs() { const r = $('.scene').getBoundingClientRect(); if (!r.width) return; W = cv.width = r.width; H = cv.height = r.height; sc = W / 360; }
+addEventListener('resize', rs);
+function mkRain() { drops = []; const n = N[rain] * (RM ? .5 : 1); for (let i = 0; i < n; i++) drops.push({ x: 70 + Math.random() * 220, y: 30 + Math.random() * 170, v: 3 + Math.random() * 3, l: 6 + Math.random() * 8 }); }
+function frame(t) {
+  requestAnimationFrame(frame);
+  if (!W || document.hidden) return;
+  cx.clearRect(0, 0, W, H);
+  cx.save(); cx.beginPath(); cx.rect(70 * sc, 30 * sc, 220 * sc, 170 * sc); cx.clip();
+  cx.fillStyle = '#f4ead8';
+  ST.forEach(s => { cx.globalAlpha = .25 + .5 * Math.abs(Math.sin(t / 1200 + s.p)); const x = 70 + (s.x + (RM ? 0 : t * .004)) % 220; cx.fillRect(x * sc, s.y * sc, 1.5, 1.5); });
+  cx.globalAlpha = .5; cx.strokeStyle = 'rgba(235,215,195,.8)'; cx.lineWidth = 1; cx.beginPath();
+  drops.forEach(d => { cx.moveTo(d.x * sc, d.y * sc); cx.lineTo((d.x - 1) * sc, (d.y + d.l) * sc); d.y += d.v * (RM ? .4 : 1); if (d.y > 200) { d.y = 30; d.x = 70 + Math.random() * 220; } });
+  cx.stroke(); cx.restore();
+  cx.fillStyle = '#f3c985';
+  dust.forEach(d => { d.y -= RM ? 0 : d.v; d.x += Math.sin(t / 2000 + d.p) * .1; if (d.y < 0) d.y = 440; cx.globalAlpha = (.12 + .18 * Math.abs(Math.sin(t / 1500 + d.p))) * (lamp ? 1 : .4); cx.beginPath(); cx.arc(d.x * sc, d.y * sc, d.r * sc, 0, 6.3); cx.fill(); });
+}
+requestAnimationFrame(frame);
+
+/* room objects */
+const G = [0, .55, .9], S = [.5, .15, 0];
+function setLamp() { $('#glow').style.opacity = G[lamp]; $('#shade').style.opacity = S[lamp]; }
+setLamp();
+$('#lamp').onclick = () => { lamp = (lamp + 1) % 3; setLamp(); toast(['Lights low.', 'Soft and warm.', 'Cozy bright.'][lamp]); };
+$('#win').onclick = () => { rain = (rain + 1) % 3; mkRain(); toast(['The rain is barely there.', 'Gentle rain.', 'Steady rain.'][rain]); };
+$('#blanket').onclick = () => toast('Blanket mode activated. Nothing important is allowed to happen for the next few minutes.');
+$('#plush').onclick = () => toast(pick(SITE_DATA.plushieMessages));
+$('#mug').onclick = () => toast('Tiny reminder: drink something if you can. No pressure. Just one small thing.');
+$('#book').onclick = () => dist();
+let mn = 0; $('#moon').onclick = () => { if (++mn >= 3) { mn = 0; toast(SITE_DATA.moonSecret); } };
+$('#dn').onclick = () => toast('Perfect. You are doing it exactly right.');
+function clock() { const d = new Date(); $('#ct').textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+clock(); setInterval(clock, 20000);
+let cb; $('#clk').onclick = () => {
+  const e = $('#ct'); clearTimeout(cb);
+  e.textContent = 'TIME TO REST'; e.setAttribute('font-size', '7.5');
+  if (Math.random() < .4) toast(pick(SITE_DATA.clockFunny));
+  cb = setTimeout(() => { e.setAttribute('font-size', '12'); clock(); }, 3500);
+};
+try { const v = (+localStorage.getItem('dthv') || 0) + 1; localStorage.setItem('dthv', v); $('#plant').style.transform = 'scale(' + (1 + Math.min(v, 10) * .04) + ')'; } catch (e) { }
+
+/* overlays */
+function ov(html, cls) { clearT(); const o = $('#ov'); o.className = 'scr on ' + (cls || ''); o.innerHTML = html; }
+function closeOv() { clearT(); const o = $('#ov'); o.className = 'scr'; setTimeout(() => { if (!o.classList.contains('on')) o.innerHTML = ''; }, 1300); }
+document.querySelectorAll('.opt').forEach(b => b.onclick = () => ({ comfort, dist, rest, comp })[b.dataset.m]());
+
+function comfort() {
+  ov('<div class="card"><p class="serif big" id="cm"></p></div><button class="btn" id="an">another one</button><button class="lnk" id="bk">back to the room</button>');
+  const n = () => { const e = $('#cm'); e.style.opacity = 0; setTimeout(() => { e.textContent = pick(SITE_DATA.comfortMessages); e.style.opacity = 1; }, 300); };
+  n(); $('#an').onclick = n; $('#bk').onclick = closeOv;
+}
+function dist() {
+  ov('<h2 class="big">pick something small</h2><button class="btn" id="g1">CATCH FALLING STARS</button><button class="btn" id="g2">MEMORY CARDS</button><button class="lnk" id="bk">okay, that\'s enough brain activity 😭</button>');
+  $('#g1').onclick = g1; $('#g2').onclick = g2; $('#bk').onclick = closeOv;
+}
+function g1() {
+  ov('<p class="small">caught: <b id="sc">0</b></p><div id="ar" class="glass"></div><button class="lnk" id="bk">okay, that\'s enough brain activity 😭</button>');
+  let c = 0; const ar = $('#ar');
+  const sp = () => { const s = document.createElement('button'); s.textContent = '✦'; s.className = 'fs'; s.style.left = (3 + Math.random() * 80) + '%'; s.style.animationDuration = (4 + Math.random() * 3) + 's'; s.onpointerdown = () => { $('#sc').textContent = ++c; s.remove(); }; s.onanimationend = () => s.remove(); ar.appendChild(s); };
+  sp(); T.push(setInterval(sp, 800)); $('#bk').onclick = closeOv;
+}
+function g2() {
+  const sy = ['☾', '✦', '❀', '☁'], d = [...sy, ...sy].sort(() => Math.random() - .5); let f = [], m = 0;
+  ov('<div id="mg">' + d.map((s, i) => `<button class="mc" data-i="${i}"><span>${s}</span></button>`).join('') + '</div><p class="small" id="ms">find the pairs. no timer, no score.</p><button class="lnk" id="bk">okay, that\'s enough brain activity 😭</button>');
+  const cs = document.querySelectorAll('.mc');
+  cs.forEach(c => c.onclick = () => {
+    const i = +c.dataset.i; if (f.length == 2 || c.classList.contains('f') || c.classList.contains('m')) return;
+    c.classList.add('f'); f.push(i);
+    if (f.length == 2) {
+      if (d[f[0]] == d[f[1]]) { f.forEach(j => { cs[j].classList.add('m'); cs[j].classList.remove('f'); }); f = []; if (++m == 4) $('#ms').textContent = 'all found. nicely done.'; }
+      else setTimeout(() => { f.forEach(j => cs[j].classList.remove('f')); f = []; }, 800);
+    }
+  });
+  $('#bk').onclick = closeOv;
+}
+function rest() {
+  ov('<p class="serif big" id="rt"></p><div id="br"><span id="bl"></span></div><button class="lnk" id="bk">stop</button>', 'dark');
+  const L = ['Nothing to solve right now.', 'Unclench your shoulders.', 'Let your eyes rest.', 'Take things slowly.']; let i = 0;
+  const sh = () => { const e = $('#rt'); if (!e) return; e.style.opacity = 0; setTimeout(() => { e.textContent = L[i++ % 4]; e.style.opacity = 1; }, 800); };
+  sh(); T.push(setInterval(sh, 6000));
+  const ph = [['inhale', 4000], ['hold', 2000], ['exhale', 5000]]; let k = 0;
+  const cy = () => { const b = $('#br'); if (!b) return; const p = ph[k++ % 3]; $('#bl').textContent = p[0]; b.style.transitionDuration = p[1] + 'ms'; if (p[0] == 'inhale') b.style.transform = 'scale(1.5)'; if (p[0] == 'exhale') b.style.transform = 'scale(1)'; T.push(setTimeout(cy, p[1])); };
+  setTimeout(cy, 600); $('#bk').onclick = closeOv;
+}
+function comp() {
+  ov('<div id="cp" style="min-height:160px;display:flex;align-items:center;justify-content:center"></div><button class="lnk" id="bk">back to the room</button>', 'dark');
+  const L = ['Okay.', "You don't have to say anything.", 'You can just stay here.', ...SITE_DATA.companyMessages]; let i = 0;
+  const nx = () => { const c = $('#cp'); if (!c || i >= L.length) return; c.innerHTML = ''; const p = document.createElement('p'); p.className = 'serif big fade'; p.textContent = L[i++]; c.appendChild(p); };
+  nx(); T.push(setInterval(nx, 5000)); $('#bk').onclick = closeOv;
+}
+
+/* check-in */
+let ck = 0;
+function ci() {
+  const e = $('#ci'), Q = SITE_DATA.checkIn;
+  if (ck >= Q.length) { e.innerHTML = '<p class="serif q fade">That\'s all. Nothing else is needed. ✦</p>'; return; }
+  const q = Q[ck];
+  e.innerHTML = `<p class="serif q fade">${q.q}</p><div class="row">${q.a.map((a, i) => `<button class="btn" data-i="${i}">${a}</button>`).join('')}</div>`;
+  e.querySelectorAll('button').forEach(b => b.onclick = () => { e.innerHTML = `<p class="serif q fade" style="padding-top:20px">${q.r[b.dataset.i]}</p>`; ck++; setTimeout(ci, 2600); });
+}
+ci();
+
+/* open when */
+SITE_DATA.openWhenMessages.forEach(o => {
+  const d = document.createElement('button'); d.className = 'env';
+  d.innerHTML = `<span class="fl"></span><span class="t">${o.title}</span><span class="m">${o.message}</span>`;
+  d.onclick = () => d.classList.toggle('open'); $('#ow').appendChild(d);
+});
+
+/* ambience (Web Audio, no files) */
+let ac, mg, nodes = [], ci2, cur = 'silence', snd = true;
+const AO = [['rain', '🌧️ Rain'], ['ocean', '🌊 Ocean'], ['fire', '🔥 Fireplace'], ['night', '🌌 Night'], ['silence', '🎧 Silence']];
+function noise(type, len) {
+  const b = ac.createBuffer(1, ac.sampleRate * (len || 3), ac.sampleRate), d = b.getChannelData(0); let l = 0;
+  for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; if (type == 'brown') { l = (l + .02 * w) / 1.02; d[i] = l * 3.5; } else d[i] = w; }
+  const s = ac.createBufferSource(); s.buffer = b; s.loop = true; return s;
+}
+function chain(src, filt, gain) { const f = ac.createBiquadFilter(); f.type = filt[0]; f.frequency.value = filt[1]; const g = ac.createGain(); g.gain.value = gain; src.connect(f); f.connect(g); g.connect(mg); src.start(); nodes.push(src); return g; }
+function amb(k) {
+  cur = k; document.querySelectorAll('#ap [data-k]').forEach(b => b.classList.toggle('sel', b.dataset.k == k));
+  nodes.forEach(n => { try { n.stop(); } catch (e) { } }); nodes = []; clearInterval(ci2);
+  const sb = $('#snd'); if (sb) sb.textContent = snd ? '🔊 Sound ON' : '🔇 Sound OFF';
+  if (k == 'silence' || !snd) return;
+  try {
+    if (!ac) { ac = new (window.AudioContext || window.webkitAudioContext)(); mg = ac.createGain(); mg.gain.value = .7; mg.connect(ac.destination); }
+    ac.resume();
+    if (k == 'rain') chain(noise('white'), ['highpass', 1200], .12);
+    if (k == 'ocean') { const g = chain(noise('brown', 4), ['lowpass', 500], .5), o = ac.createOscillator(), lg = ac.createGain(); o.frequency.value = .09; lg.gain.value = .35; o.connect(lg); lg.connect(g.gain); o.start(); nodes.push(o); }
+    if (k == 'fire') { chain(noise('brown'), ['lowpass', 700], .5); ci2 = setInterval(() => { const s = noise('white', .05), f = ac.createBiquadFilter(), g = ac.createGain(); f.type = 'highpass'; f.frequency.value = 2500; g.gain.value = .15 + Math.random() * .2; s.loop = false; s.connect(f); f.connect(g); g.connect(mg); s.start(); setTimeout(() => { try { s.stop(); } catch (e) { } }, 40); }, 350); }
+    if (k == 'night') { chain(noise('brown'), ['lowpass', 220], .25); [110, 164.8].forEach(fr => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = fr; g.gain.value = .025; o.connect(g); g.connect(mg); o.start(); nodes.push(o); }); }
+  } catch (e) { toast('Sound is not available here, but the room is still yours.'); }
+}
+$('#ap').innerHTML = AO.map(a => `<button data-k="${a[0]}">${a[1]}</button>`).join('') + '<button id="snd">🔊 Sound ON</button>';
+$('#ap').querySelectorAll('[data-k]').forEach(b => b.onclick = () => amb(b.dataset.k));
+$('#snd').onclick = () => { snd = !snd; amb(cur); };
+$('#ab').onclick = () => $('#ap').classList.toggle('on');
+amb('silence');
+
+/* final screen */
+$('#end').onclick = () => {
+  clearT(); $('#fin').className = 'scr on'; $('#cw').style.display = 'none';
+  const L = ["You don't have to be okay right now.", 'You can rest.', 'You can be quiet.', 'You can complain about everything.', 'You can do absolutely nothing.', 'Today is allowed to be a slow day.', 'Take care of yourself gently. 🌙']; let i = 0; const box = $('#fl'); box.innerHTML = '';
+  const nx = () => {
+    box.innerHTML = '';
+    if (i < L.length) { const p = document.createElement('p'); p.className = 'serif big fade'; p.textContent = L[i++]; box.appendChild(p); T.push(setTimeout(nx, 4200)); }
+    else { T.push(setTimeout(() => { $('#cw').style.display = 'block'; $('#cw').classList.add('fade'); }, 400)); }
+  };
+  setTimeout(nx, 1200);
+};
+$('#cw').onclick = () => {
+  clearT(); $('#cw').style.display = 'none'; $('#fl').innerHTML = '';
+  setTimeout(() => { const p = document.createElement('p'); p.className = 'serif big fade'; p.textContent = 'the world can wait.'; $('#fl').appendChild(p); }, 1500);
+  setTimeout(() => $('#blk').classList.add('on'), 8000);
+  setTimeout(() => { $('#bk2').style.opacity = .25; }, 15000);
+};
+$('#blk').onclick = () => { if ($('#blk').classList.contains('on')) { $('#blk').classList.remove('on'); $('#bk2').style.opacity = 0; $('#fin').className = 'scr'; $('#fl').innerHTML = ''; scrollTo(0, 0); } };
+</script>
+</body>
+</html>
